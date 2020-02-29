@@ -159,41 +159,60 @@ int main(int argc, char **argv)
     printf("probability: %f\n", prob);
     printf("Random # generator seed: %d\n", rs);
 
-    /* Plot the initial data */
-    if (!disable_display)
-        MeshPlot(0, nx, ny, currWorld);
-
     /* Perform updates for maxiter iterations */
     double t0 = getTime();
     int t;
 
     for (t = 0; t < maxiter && population; t++)
     {
-        /* Use currWorld to compute the updates and store it in nextWorld */
-        population = 0;
-        for (i = 1; i < nx - 1; i++)
-            for (j = 1; j < ny - 1; j++)
+        #pragma omp parallel num_threads(numthreads)
+        {
+            #pragma omp sections
             {
-                int nn = currWorld[i + 1][j] + currWorld[i - 1][j] +
-                         currWorld[i][j + 1] + currWorld[i][j - 1] +
-                         currWorld[i + 1][j + 1] + currWorld[i - 1][j - 1] +
-                         currWorld[i - 1][j + 1] + currWorld[i + 1][j - 1];
+                #pragma omp section
+                {
+                    // int myID = omp_get_thread_num(); 
+                    // int num_threads = omp_get_num_threads(); 
+                    // printf("Computation thread %d of %d\n", myID, num_threads);
+                    
+                    /* Use currWorld to compute the updates and store it in nextWorld */
+                    population = 0;
+                    for (i = 1; i < nx - 1; i++)
+                        for (j = 1; j < ny - 1; j++)
+                        {
+                            int nn = currWorld[i + 1][j] + currWorld[i - 1][j] +
+                                     currWorld[i][j + 1] + currWorld[i][j - 1] +
+                                     currWorld[i + 1][j + 1] + currWorld[i - 1][j - 1] +
+                                     currWorld[i - 1][j + 1] + currWorld[i + 1][j - 1];
 
-                nextWorld[i][j] = currWorld[i][j] ? (nn == 2 || nn == 3) : (nn == 3);
-                population += nextWorld[i][j];
+                            nextWorld[i][j] = currWorld[i][j] ? (nn == 2 || nn == 3) : (nn == 3);
+                            population += nextWorld[i][j];
+                        }
+                }
+                #pragma omp section
+                {
+                    // int myID = omp_get_thread_num(); 
+                    // int num_threads = omp_get_num_threads(); 
+                    // printf("Plotting thread %d of %d\n", myID, num_threads);
+
+                    /* Plot currWorld */
+                    if (!disable_display)
+                        MeshPlot(t, nx, ny, currWorld);
+                }
             }
+        }
 
         /* Pointer Swap : nextWorld <-> currWorld */
         tmesh = nextWorld;
         nextWorld = currWorld;
         currWorld = tmesh;
 
-        /* Start the new plot */
-        if (!disable_display)
-            MeshPlot(t, nx, ny, currWorld);
-
         if (s_step)
         {
+            /* Plot the last iteration */
+            if (!disable_display)
+                 MeshPlot(t, nx, ny, currWorld);
+
             printf("Finished with step %d\n", t);
             printf("Press enter to continue.\n");
             getchar();
