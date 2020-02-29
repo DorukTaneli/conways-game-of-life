@@ -205,6 +205,10 @@ int main(int argc, char **argv)
 
         if (s_step)
         {
+            /* Plot last iteration */
+            if (!disable_display)
+                MeshPlot(t, nx, ny, currWorld);
+
             printf("Finished with step %d\n", t);
             printf("Press enter to continue.\n");
             getchar();
