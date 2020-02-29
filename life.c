@@ -160,8 +160,8 @@ int main(int argc, char **argv)
     printf("Random # generator seed: %d\n", rs);
 
     /* Plot the initial data */
-    //    if (!disable_display)
-    //        MeshPlot(0, nx, ny, currWorld);
+    if (!disable_display)
+        MeshPlot(0, nx, ny, currWorld);
 
     /* Perform updates for maxiter iterations */
     double t0 = getTime();
@@ -169,39 +169,28 @@ int main(int argc, char **argv)
 
     for (t = 0; t < maxiter && population; t++)
     {
-        #pragma omp parallel
-        {
-            #pragma omp sections
+        /* Use currWorld to compute the updates and store it in nextWorld */
+        population = 0;
+        for (i = 1; i < nx - 1; i++)
+            for (j = 1; j < ny - 1; j++)
             {
-                #pragma omp section
-                {
-                    /* Use currWorld to compute the updates and store it in nextWorld */
-                    population = 0;
-                    for (i = 1; i < nx - 1; i++)
-                        for (j = 1; j < ny - 1; j++)
-                        {
-                            int nn = currWorld[i + 1][j] + currWorld[i - 1][j] +
-                                     currWorld[i][j + 1] + currWorld[i][j - 1] +
-                                     currWorld[i + 1][j + 1] + currWorld[i - 1][j - 1] +
-                                     currWorld[i - 1][j + 1] + currWorld[i + 1][j - 1];
+                int nn = currWorld[i + 1][j] + currWorld[i - 1][j] +
+                         currWorld[i][j + 1] + currWorld[i][j - 1] +
+                         currWorld[i + 1][j + 1] + currWorld[i - 1][j - 1] +
+                         currWorld[i - 1][j + 1] + currWorld[i + 1][j - 1];
 
-                            nextWorld[i][j] = currWorld[i][j] ? (nn == 2 || nn == 3) : (nn == 3);
-                            population += nextWorld[i][j];
-                        }
-                }
-                #pragma omp section
-                {
-                    /* Start the new plot */
-                    if (!disable_display)
-                        MeshPlot(t, nx, ny, currWorld);
-                }
+                nextWorld[i][j] = currWorld[i][j] ? (nn == 2 || nn == 3) : (nn == 3);
+                population += nextWorld[i][j];
             }
-        }
 
         /* Pointer Swap : nextWorld <-> currWorld */
         tmesh = nextWorld;
         nextWorld = currWorld;
         currWorld = tmesh;
+
+        /* Start the new plot */
+        if (!disable_display)
+            MeshPlot(t, nx, ny, currWorld);
 
         if (s_step)
         {
