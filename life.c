@@ -162,13 +162,10 @@ int main(int argc, char **argv)
     /* Perform updates for maxiter iterations */
     double t0 = getTime();
     int t;
-    int taskParallelism = 1;
-    if (numthreads > 1)
-        taskParallelism = 2;
 
     for (t = 0; t < maxiter; t++)
     {
-        #pragma omp parallel num_threads(taskParallelism)
+        #pragma omp parallel num_threads(2)
         {
             #pragma omp sections
             {
