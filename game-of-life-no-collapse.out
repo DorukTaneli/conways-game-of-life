@@ -1,0 +1,76 @@
+Setting stack size to unlimited...
+core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 1030905
+max locked memory       (kbytes, -l) unlimited
+max memory size         (kbytes, -m) 204800000
+open files                      (-n) 1024
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) unlimited
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 4096
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+
+Running Job...!
+===============================================================================
+Running compiled binary...
+Serial version...
+probability: 0.200000
+Random # generator seed: 1583343498
+Running time for the iterations: 39.573913 sec.
+Press enter to end.
+Parallel version with 2 threads
+probability: 0.200000
+Random # generator seed: 1582610359
+Running time for the iterations: 39.554934 sec.
+Press enter to end.
+Parallel version with 4 threads
+probability: 0.200000
+Random # generator seed: 1582406622
+Running time for the iterations: 36.715676 sec.
+Press enter to end.
+Parallel version with 8 threads
+probability: 0.200000
+Random # generator seed: 1583088426
+Running time for the iterations: 25.091696 sec.
+Press enter to end.
+Parallel version with 16 threads
+probability: 0.200000
+Random # generator seed: 1582406359
+Running time for the iterations: 22.071099 sec.
+Press enter to end.
+Parallel version with 32 threads
+probability: 0.200000
+Random # generator seed: 1582734266
+Running time for the iterations: 23.508642 sec.
+Press enter to end.
+n 2000 with 16 threads
+probability: 0.200000
+Random # generator seed: 1583156599
+Running time for the iterations: 22.543382 sec.
+Press enter to end.
+n 4000 with 16 threads
+probability: 0.200000
+Random # generator seed: 1583022922
+Running time for the iterations: 90.376284 sec.
+Press enter to end.
+n 6000 with 16 threads
+probability: 0.200000
+Random # generator seed: 1582406350
+Running time for the iterations: 195.819971 sec.
+Press enter to end.
+n 8000 with 16 threads
+probability: 0.200000
+Random # generator seed: 1583083721
+Running time for the iterations: 361.822522 sec.
+Press enter to end.
+n 10000 with 16 threads
+probability: 0.200000
+Random # generator seed: 1582325794
+Running time for the iterations: 568.844738 sec.
+Press enter to end.
