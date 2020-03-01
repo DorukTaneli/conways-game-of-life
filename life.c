@@ -163,9 +163,9 @@ int main(int argc, char **argv)
     double t0 = getTime();
     int t;
 
-    for (t = 0; t < maxiter && population; t++)
+    for (t = 0; t < maxiter; t++)
     {
-        #pragma omp parallel num_threads(numthreads)
+        #pragma omp parallel num_threads(2)
         {
             #pragma omp sections
             {
@@ -176,8 +176,10 @@ int main(int argc, char **argv)
                     // printf("Computation thread %d of %d\n", myID, num_threads);
                     
                     /* Use currWorld to compute the updates and store it in nextWorld */
-                    population = 0;
+                    //population = 0;
+                    #pragma omp parallel for num_threads(numthreads)
                     for (i = 1; i < nx - 1; i++)
+                    {
                         for (j = 1; j < ny - 1; j++)
                         {
                             int nn = currWorld[i + 1][j] + currWorld[i - 1][j] +
@@ -186,8 +188,9 @@ int main(int argc, char **argv)
                                      currWorld[i - 1][j + 1] + currWorld[i + 1][j - 1];
 
                             nextWorld[i][j] = currWorld[i][j] ? (nn == 2 || nn == 3) : (nn == 3);
-                            population += nextWorld[i][j];
+                            //population += nextWorld[i][j];
                         }
+                    }
                 }
                 #pragma omp section
                 {
