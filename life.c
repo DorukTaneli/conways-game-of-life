@@ -169,7 +169,7 @@ int main(int argc, char **argv)
         {
             #pragma omp sections
             {
-                #pragma omp section
+                #pragma omp section //computation
                 {
                     // int myID = omp_get_thread_num(); 
                     // int num_threads = omp_get_num_threads(); 
@@ -192,7 +192,7 @@ int main(int argc, char **argv)
                         }
                     }
                 }
-                #pragma omp section
+                #pragma omp section //plotting
                 {
                     // int myID = omp_get_thread_num(); 
                     // int num_threads = omp_get_num_threads(); 
