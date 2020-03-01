@@ -177,7 +177,7 @@ int main(int argc, char **argv)
                     
                     /* Use currWorld to compute the updates and store it in nextWorld */
                     //population = 0;
-                    #pragma omp parallel for num_threads(numthreads-1)
+                    #pragma omp parallel for num_threads(numthreads-1) collapse(2)
                     for (i = 1; i < nx - 1; i++)
                     {
                         for (j = 1; j < ny - 1; j++)
